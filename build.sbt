@@ -31,3 +31,10 @@ libraryDependencies += "org.scalatest" % "scalatest_2.10" % "1.9.1" % "test"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.0.11"
 
 libraryDependencies += "org.apache.commons" % "commons-math3" % "3.2"
+
+//libraryDependencies += "net.databinder.dispatch" %% "dispatch-core" % "0.10.0"
+
+libraryDependencies += "commons-io" % "commons-io" % "2.4"
+
+
+libraryDependencies += "org.mapdb" % "mapdb" % "0.9.1"

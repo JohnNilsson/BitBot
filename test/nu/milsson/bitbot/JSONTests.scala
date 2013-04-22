@@ -2,10 +2,8 @@ package nu.milsson.bitbot
 
 import org.scalatest._
 import org.json.JSONObject
-import nu.milsson.bitbot.mtgox.Depth
 import org.scalatest.matchers.ShouldMatchers
-import nu.milsson.bitbot.mtgox.Ticker
-import nu.milsson.bitbot.mtgox.Trade
+import nu.milsson.bitbot.mtgox.json._
 
 class JSONTests extends FreeSpec with ShouldMatchers {
   "Parse MtGox events" - {
