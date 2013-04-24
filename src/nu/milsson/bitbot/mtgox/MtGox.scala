@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory
 import nu.milsson.bitbot.mtgox.json._
 import org.apache.commons.io.IOUtils
 import java.net.URL
+import java.util.Date
 
 trait Currency {
   val scale: Int
@@ -39,8 +40,10 @@ object MtGox {
     }
   }
 
-  def fetch(since: Long) =
+  def fetch(since: Long) = {
+    log.info("Fetching trades since {}", new Date(since / 1000))
     parseFetch(IOUtils.toString(new URL("https://data.mtgox.com/api/2/BTCUSD/money/trades/fetch?since=" + since)))
+  }
 
   def parseFetch(s: String) = {
     val data = new JSONObject(s).getJSONArray("data")

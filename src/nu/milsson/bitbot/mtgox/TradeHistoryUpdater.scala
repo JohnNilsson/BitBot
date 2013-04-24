@@ -1,30 +1,28 @@
 package nu.milsson.bitbot.mtgox
 
-import nu.milsson.bitbot.storage.TradeHistory
-import org.slf4j.LoggerFactory
-import java.util.Date
-import nu.milsson.bitbot.storage.Trade
 import scala.util.Try
+
+import org.slf4j.LoggerFactory
+
+import nu.milsson.bitbot.storage.Trade
+import nu.milsson.bitbot.storage.TradeHistory
 
 object TradeHistoryUpdater {
   val log = LoggerFactory.getLogger("TradeHistoryUpdater")
+
   val interestingTimeSpan = 1000L * 1000 * 60 * 60 * 24 * 7
+
+  def now = System.currentTimeMillis() * 1000
+
+  def nextTradeToFetch = Try(TradeHistory.lastUSDTrade).getOrElse(now - interestingTimeSpan)
+
+  def fetchTrades(since: Long) = MtGox.fetch(since) map { t => Trade(t.tid, t.amount, t.price) }
+
+  def missingTrades = Stream.continually(fetchTrades(nextTradeToFetch)).takeWhile(_.length > 0)
+
   def apply() {
-    val now = System.currentTimeMillis() * 1000;
-    var last = Try(TradeHistory.lastUSDTrade).getOrElse(now - interestingTimeSpan)
-    log.info("Begin trade fetch from {}", new Date(last / 1000))
-
-    while (last < now) {
-      log.info("Fetching trades since {}", new Date(last / 1000))
-
-      val trades = MtGox.fetch(last) map { t => Trade(t.tid, t.amount, t.price) }
-
-      if (trades.length == 0)
-        return ;
-
+    log.info("Begin trade fetch")
+    for (trades <- missingTrades)
       TradeHistory.addUSDTrades(trades)
-
-      last = TradeHistory.lastUSDTrade
-    }
   }
 }
