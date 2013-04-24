@@ -4,6 +4,7 @@ import java.io.PrintStream
 import nu.milsson.bitbot.mtgox._
 import org.apache.commons.math3.stat.regression.SimpleRegression
 import java.util.Date
+import nu.milsson.bitbot.mtgox.tradehistory.TradeHistoryUpdater
 
 object BitBot extends App {
   // Disable logging in java-websocket

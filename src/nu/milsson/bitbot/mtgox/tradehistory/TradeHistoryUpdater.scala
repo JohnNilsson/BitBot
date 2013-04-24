@@ -1,11 +1,8 @@
-package nu.milsson.bitbot.mtgox
+package nu.milsson.bitbot.mtgox.tradehistory
 
 import scala.util.Try
-
 import org.slf4j.LoggerFactory
-
-import nu.milsson.bitbot.storage.Trade
-import nu.milsson.bitbot.storage.TradeHistory
+import nu.milsson.bitbot.mtgox.MtGox
 
 object TradeHistoryUpdater {
   val log = LoggerFactory.getLogger("TradeHistoryUpdater")

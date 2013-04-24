@@ -1,16 +1,9 @@
-package nu.milsson.bitbot.storage
+package nu.milsson.bitbot.mtgox.tradehistory
 
 import org.mapdb.DBMaker
 import java.io.File
 import scala.collection.JavaConversions._
 import org.mapdb.Fun
-import org.mapdb.Serializer
-import java.io.DataOutput
-import java.io.DataInput
-import nu.milsson.bitbot.mtgox.BTC
-import nu.milsson.bitbot.mtgox.USD
-import org.mapdb.BTreeKeySerializer.BasicKeySerializer
-import org.mapdb.BTreeKeySerializer
 import org.slf4j.LoggerFactory
 
 object TradeHistory {
