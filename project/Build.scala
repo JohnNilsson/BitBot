@@ -10,5 +10,9 @@ object ApplicationBuild extends Build {
   val mtgoxApi		= Project("bitbot-mtgoxapi", file("mtgoxapi"))
   val bitbot		= play.Project(
   	appName, appVersion, appDependencies, file("bitbot")
-  ).dependsOn(mtgoxApi)
+  )
+  .dependsOn(mtgoxApi)
+  .settings(
+  	requireJS += "main.js"
+  )
 }
