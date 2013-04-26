@@ -12,7 +12,7 @@ object ApplicationBuild extends Build {
   	appName, appVersion, appDependencies, file("bitbot")
   )
   .dependsOn(mtgoxApi)
-  .settings(
-  	requireJS += "main.js"
+  .settings(  	
+  	requireJs += "main.js"
   )
 }
