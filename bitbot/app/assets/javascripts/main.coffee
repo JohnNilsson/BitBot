@@ -49,7 +49,7 @@ require ['jQuery','d3', 'cubism'], ($, d3, cubism) ->
       .append("div")
       .attr("class", "horizon")
       .call(ctx.horizon()
-        #.height(150)
+        .height(150)
         .format(d3.format(".2f"))
         .title("$"))
 
