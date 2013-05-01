@@ -35,6 +35,10 @@ object Application extends Controller {
     val until = req.getQueryString("stop").get.toLong * 1000
     val step = req.getQueryString("step").get.toLong * 1000
 
-    Ok(Json.toJson(fillMissing(BigDecimal(0), fetchTrades(since, until, step) map vwap)))
+    val data = fetchTrades(since, until, step)
+    val prices = (data map vwap)
+    val filledPrices = fillMissing(BigDecimal(0), prices)
+    val json = Json.toJson(filledPrices.toArray)
+    Ok(json)
   }
 }
