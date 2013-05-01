@@ -6,10 +6,12 @@ import nu.milsson.bitbot.mtgox.json._
 import org.apache.commons.io.IOUtils
 import java.net.URL
 import java.util.Date
+import scala.math.BigDecimal.RoundingMode
 
 trait Currency {
   val scale: Int
-  def apply(unscaled: Long) = BigDecimal(unscaled, scale)
+  def round(value: BigDecimal) = value.setScale(this.scale, RoundingMode.HALF_EVEN)
+  def apply(unscaled: Long) = round(BigDecimal(unscaled, scale))
 }
 object BTC extends Currency {
   val scale = 8
