@@ -42,8 +42,8 @@ require ['jQuery','d3', 'cubism'], ($, d3, cubism) ->
      .append("div")
      .attr("class","axis")
      .call(ctx.axis()
-      .tickFormat(d3.time.format("%X"))
-      .ticks(d3.time.minutes, 24*4))
+      .orient("top")
+      .tickFormat(d3.time.format("%X")))
 
     body
       .append("div")
