@@ -12,7 +12,6 @@ object TradeHistory {
   private[this] lazy val db = DBMaker
     .newFileDB(new File("bitbot.db"))
     .asyncWriteDisable() // Some weirdness regarding interrupts
-    .compressionEnable()
     .closeOnJvmShutdown()
     .make()
 
@@ -27,8 +26,9 @@ object TradeHistory {
   def addUSDTrade(trade: Trade) {
     try {
       tradeUSD.put(trade.tid, trade2t2(trade))
-    } finally {
       db.commit()
+    } finally {
+      db.rollback()
     }
   }
 
@@ -37,8 +37,9 @@ object TradeHistory {
     try {
       val tradeMap = trades.map(t => (t.tid, trade2t2(t))).toMap
       tradeUSD.putAll(tradeMap)
-    } finally {
       db.commit()
+    } finally {
+      db.rollback()
     }
   }
 

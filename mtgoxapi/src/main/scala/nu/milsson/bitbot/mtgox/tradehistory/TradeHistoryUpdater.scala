@@ -3,6 +3,7 @@ package nu.milsson.bitbot.mtgox.tradehistory
 import scala.util.Try
 import org.slf4j.LoggerFactory
 import nu.milsson.bitbot.mtgox.MtGox
+import java.util.concurrent.atomic.AtomicBoolean
 
 object TradeHistoryUpdater {
   val log = LoggerFactory.getLogger("TradeHistoryUpdater")
@@ -17,9 +18,16 @@ object TradeHistoryUpdater {
 
   def missingTrades = Stream.continually(fetchTrades(nextTradeToFetch)).takeWhile(_.length > 0)
 
+  private[this] val running = new AtomicBoolean
   def apply() {
-    log.info("Begin trade fetch")
-    for (trades <- missingTrades)
-      TradeHistory.addUSDTrades(trades)
+    if (!running.compareAndSet(false, true))
+      throw new IllegalStateException("Allready running");
+    try {
+      log.info("Begin trade fetch")
+      for (trades <- missingTrades)
+        TradeHistory.addUSDTrades(trades)
+    } finally {
+      running.set(false)
+    }
   }
 }
