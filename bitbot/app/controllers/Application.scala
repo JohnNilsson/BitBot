@@ -18,7 +18,7 @@ object Application extends Controller {
     if (until <= since) Stream.Empty
     else TradeHistory.getUSDTrades(since, (since + step) min until) #:: fetchTrades(since + step, until, step)
 
-  def fillMissing[T](filler: T, s: Stream[Option[T]]): Stream[T] = {
+  def fillMissing[T](filler: T, s: Iterable[Option[T]]): Stream[T] = {
     if (s.isEmpty) Stream.Empty
     else {
       val next = s.head getOrElse filler
