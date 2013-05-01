@@ -1,5 +1,6 @@
 package nu.milsson.bitbot.mtgox.tradehistory
 
+import nu.milsson.bitbot.mtgox._
 import org.mapdb.DBMaker
 import java.io.File
 import scala.collection.JavaConversions._
@@ -21,6 +22,8 @@ object TradeHistory {
     trade.amount.underlying.unscaledValue.longValue,
     trade.price.underlying.unscaledValue.longValue)
 
+  private def t22trade(tid: Long, t: Fun.Tuple2[Long, Long]) = Trade(tid = tid, amount = BTC(t.a), price = USD(t.b))
+
   def addUSDTrade(trade: Trade) {
     try {
       tradeUSD.put(trade.tid, trade2t2(trade))
@@ -40,6 +43,9 @@ object TradeHistory {
   }
 
   def lastUSDTrade = tradeUSD.lastKey()
+
+  def getUSDTrades(since: Long, until: Long) = tradeUSD.subMap(since, until).map(t => t22trade(t._1, t._2))
+
 }
 
 case class Trade(val tid: Long, val amount: BigDecimal, val price: BigDecimal) extends Comparable[Trade] {
