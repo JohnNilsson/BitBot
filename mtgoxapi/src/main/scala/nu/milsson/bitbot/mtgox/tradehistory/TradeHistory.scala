@@ -6,6 +6,7 @@ import java.io.File
 import scala.collection.JavaConversions._
 import org.mapdb.Fun
 import org.slf4j.LoggerFactory
+import scala.util.Try
 
 object TradeHistory {
   val log = LoggerFactory.getLogger("TradeHistory")
@@ -34,7 +35,7 @@ object TradeHistory {
     }
   }
 
-  def lastUSDTrade = tradeUSD.lastKey()
+  def lastUSDTrade = try { Some(tradeUSD.lastKey()) } catch { case _: NoSuchElementException => None }
 
   def getUSDTrades(since: Long, until: Long) = tradeUSD.subMap(since, until).map(t => t22trade(t._1, t._2))
 

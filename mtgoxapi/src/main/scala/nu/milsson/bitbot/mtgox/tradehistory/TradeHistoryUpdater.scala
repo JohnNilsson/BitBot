@@ -12,7 +12,7 @@ object TradeHistoryUpdater {
 
   def now = System.currentTimeMillis() * 1000
 
-  def nextTradeToFetch = Try(TradeHistory.lastUSDTrade).getOrElse(now - interestingTimeSpan)
+  def nextTradeToFetch = TradeHistory.lastUSDTrade getOrElse (now - interestingTimeSpan)
 
   def fetchTrades(since: Long) = MtGox.fetch(since) map { t => Trade(t.tid, t.amount, t.price) }
 
