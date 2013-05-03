@@ -23,15 +23,6 @@ object TradeHistory {
 
   private def t22trade(tid: Long, t: Fun.Tuple2[Long, Long]) = Trade(tid = tid, amount = BTC(t.a), price = USD(t.b))
 
-  def addUSDTrade(trade: Trade) {
-    try {
-      tradeUSD.put(trade.tid, trade2t2(trade))
-      db.commit()
-    } finally {
-      db.rollback()
-    }
-  }
-
   def addUSDTrades(trades: Seq[Trade]) {
     log.info("Adding {} trades to db", trades.length)
     try {
