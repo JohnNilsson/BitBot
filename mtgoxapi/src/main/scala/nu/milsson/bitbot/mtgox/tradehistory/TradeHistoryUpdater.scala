@@ -26,6 +26,8 @@ object TradeHistoryUpdater {
       log.info("Begin trade fetch")
       for (trades <- missingTrades)
         TradeHistory.addUSDTrades(trades)
+    } catch {
+      case e: Throwable => log.error("Fetch failed", e); throw e
     } finally {
       running.set(false)
     }
