@@ -1,58 +1,26 @@
-loadTrades = (start, stop, step, callback) ->
-  console.log 'Load trades'
-  params = $.param
-    'start': +start
-    'stop': +stop
-    'step': +step
-  url = 'trades?' + params
-  console.log 'Fetching',url
-  $.getJSON(url)
-    .done (d) -> 
-      callback(null, d)
-      return
-    .fail (jqxhr, msg, e) ->
-      console.error(e)
-      callback(e, null)
-      return
-  return
-
-
 requirejs.config
   paths: 
-    jQuery:   "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min"
-    d3:       "//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min"
-    cubism:   "//cdnjs.cloudflare.com/ajax/libs/cubism/1.2.2/cubism.v1.min"
+    jquery:   "//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery"
+    d3:       "//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3"
+    cubism:   "//cdnjs.cloudflare.com/ajax/libs/cubism/1.2.2/cubism.v1"
   shim:
+    jquery:
+      exports: 'jQuery'
+      init: ($) -> $.noConflict(true)
     d3:
       exports: 'd3'
     cubism:
       deps: ['d3']
       exports: 'cubism'
 
-
-require ['jQuery','d3', 'cubism'], ($, d3, cubism) ->
-  ctx = cubism.context()
+require ['d3', 'cubism', 'plot'], (d3, cubism, p) ->
+  console.log("Create context")
+  ctxM1 = cubism.context()
     .step(1000*60) # One minute steps
     .size(60*24) # 24 hours of data
-
-  d3.select(document.body).call (body) ->
-    body.datum(ctx.metric(loadTrades))
-    
-    body
-     .append("div")
-     .attr("class","axis")
-     .call(ctx.axis()
-      .orient("top")
-      .tickFormat(d3.time.format("%X")))
-
-    body
-      .append("div")
-      .attr("class", "horizon")
-      .call(ctx.horizon()
-        .height(150)
-        .format(d3.format(".2f"))
-        .title("$"))
-
-
-    return
+  # ctxH1 = cubism.context()
+  #   .step(1000*60*60) # One hour steps
+  #   .size(24*60) # Two Months of data
+  p.plot(ctxM1, d3.select(document.body).append("div"))
+  # p.plot(ctxH1, d3.select(document.body).append("div"))
   return
