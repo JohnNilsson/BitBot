@@ -18,4 +18,6 @@ libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.5"
 
 libraryDependencies += "commons-io" % "commons-io" % "2.4"
 
-libraryDependencies += "org.mapdb" % "mapdb" % "0.9.1"
+//libraryDependencies += "org.mapdb" % "mapdb" % "0.9.1"
+
+libraryDependencies += "com.higherfrequencytrading" % "chronicle" % "1.7"
